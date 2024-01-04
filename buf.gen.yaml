@@ -10,3 +10,9 @@ plugins:
   - name: go-grpc
     out: internal/gen
     opt: paths=source_relative
+  - plugin: buf.build/connectrpc/es:v1.2.1
+    out: connect-example/gen
+    opt: target=ts
+  - plugin: buf.build/bufbuild/es:v1.6.0
+    out: connect-example/gen
+    opt: target=ts

@@ -1,16 +1,27 @@
 version: "3.9"
 services:
-  server:
+  server_python:
     build:
       context: .
+      dockerfile: Dockerfile.python
+    # inifinite sleep so that the container doesn't exit
+    # command: ["sh", "-c", "while true; do sleep 1; done"]
+    volumes:
+      - ./:/code
+
+  server_go:
+    build:
+      context: .
+      dockerfile: Dockerfile.go
   envoy:
     image: envoyproxy/envoy:v1.26-latest
     ports:
-      - "8080:8080"
+      - "5555:8080"
       - "9090:9090"
     environment:
       - ENVOY_UID=0
     volumes:
       - ./envoy.yaml:/etc/envoy/envoy.yaml:ro
     depends_on:
-      - server
+      - server_go
+      - server_python
